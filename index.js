@@ -1,6 +1,6 @@
 import express from "express";
 import { config } from "dotenv";
-import connectDB from "./DbConnection.js";
+import connectDB from "./config/DbConnection.js";
 import authRouter from "./routes/authRoute.js";
 import bodyParser from "body-parser";
 import { errorHandler, notFound } from "./middlewares/errorHandler.js";
