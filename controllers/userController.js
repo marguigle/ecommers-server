@@ -49,3 +49,28 @@ export const getOneUser = expressAsyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+export const deleteOneUser = expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const userDeleted = await User.findByIdAndDelete(id);
+
+  res.json({ message: "the user was deleted successfully", user: userDeleted });
+});
+export const updateOneUser = expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const userUpdated = await User.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      {
+        new: true,
+      }
+    );
+
+    res.json({
+      user: userUpdated,
+      message: "The user was udated successfully",
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
