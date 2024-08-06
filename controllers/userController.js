@@ -75,114 +75,41 @@ export const updateOneUser = expressAsyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
-
-// import generateToken from "../config/jwtToken.js";
-// import User from "../models/userModel.js";
-// import expressAsyncHandler from "express-async-handler";
-
-// // Crear un nuevo usuario
-// export const createUser = expressAsyncHandler(async (req, res) => {
-//   const { email } = req.body;
-//   const findUser = await User.findOne({ email });
-
-//   if (!findUser) {
-//     const newUser = await User.create(req.body);
-//     res.status(201).json(newUser); // Cambiado a 201 para creación exitosa
-//   } else {
-//     res.status(400);
-//     throw new Error("User already exists");
-//   }
-// });
-
-// // Iniciar sesión de usuario
-// export const loginUserController = expressAsyncHandler(async (req, res) => {
-//   const { email, password } = req.body;
-//   const findUser = await User.findOne({ email });
-//   if (findUser && (await findUser.isPasswordMatched(password))) {
-//     res.json({
-//       _id: findUser._id.toString(),
-//       firstname: findUser.firstname,
-//       lastname: findUser.lastname,
-//       email: findUser.email,
-//       mobile: findUser.mobile,
-//       token: generateToken(findUser._id.toString()),
-//     });
-//   } else {
-//     res.status(401);
-//     throw new Error("Invalid credentials");
-//   }
-// });
-
-// // Obtener todos los usuarios
-// export const getAllUsers = expressAsyncHandler(async (req, res) => {
-//   try {
-//     const users = await User.find();
-//     res.json(users);
-//   } catch (error) {
-//     res.status(500);
-//     throw new Error("No users found");
-//   }
-// });
-
-// // Obtener un usuario por ID
-// export const getOneUser = expressAsyncHandler(async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const userFound = await User.findById(id);
-//     if (userFound) {
-//       res.json(userFound);
-//     } else {
-//       res.status(404);
-//       throw new Error("User not found");
-//     }
-//   } catch (error) {
-//     res.status(500);
-//     throw new Error(error.message);
-//   }
-// });
-
-// // Eliminar un usuario por ID
-// export const deleteOneUser = expressAsyncHandler(async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const userDeleted = await User.findByIdAndDelete(id);
-//     if (userDeleted) {
-//       res.json({
-//         message: "The user was deleted successfully",
-//         user: userDeleted,
-//       });
-//     } else {
-//       res.status(404);
-//       throw new Error("User not found");
-//     }
-//   } catch (error) {
-//     res.status(500);
-//     throw new Error(error.message);
-//   }
-// });
-
-// // Actualizar un usuario por ID
-// export const updateOneUser = expressAsyncHandler(async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const userUpdated = await User.findByIdAndUpdate(
-//       id,
-//       { ...req.body },
-//       {
-//         new: true,
-//       }
-//     );
-//     if (userUpdated) {
-//       res.json({
-//         user: userUpdated,
-//         message: "The user was updated successfully",
-//       });
-//     } else {
-//       res.status(404);
-//       throw new Error("User not found");
-//     }
-//   } catch (error) {
-//     res.status(500);
-//     throw new Error(error.message);
-//   }
-// });
+export const blockUser = expressAsyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const block = await User.findByIdAndUpdate(
+      id,
+      {
+        isBlocked: true,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json({
+      message: "User Blocked",
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+export const unblockUser = expressAsyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const unblock = await User.findByIdAndUpdate(
+      id,
+      {
+        isBlocked: false,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json({
+      message: "User Unblocked",
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
