@@ -22,29 +22,31 @@ var productSchema = new mongoose.Schema(
       required: true,
     },
     category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
+      type: String,
+      required: true,
     },
-
+    //mongoose.Schema.Types.ObjectId
     images: {
       type: Array,
     },
     brand: {
       type: String,
-      enum: ["Apple", "Samsung", "Lenovo"],
+      required: true,
     },
-    quantity: Number,
+    //  enum: ["Apple", "Samsung", "Lenovo"],
+    quantity: { type: Number, required: true },
     sold: {
       type: Number,
       defaul: 0,
     },
     color: {
       type: String,
-      enum: ["Black", "Brown", "Red"],
+      required: true,
     },
+    // enum: ["Black", "Brown", "Red"],
     ratings: [
       {
-        star: number,
+        star: Number,
         postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       },
     ],
@@ -55,4 +57,4 @@ var productSchema = new mongoose.Schema(
 );
 
 //Export the model
-exports = mongoose.model("Product", productSchema);
+export default mongoose.model("Product", productSchema);
