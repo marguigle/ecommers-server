@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
-// const { Schema, model } = mongoose;
-// const { ObjectId } = Schema.Types;
 import bcrypt from "bcrypt";
-// Declare the Schema of the Mongo model
+
 var userSchema = new mongoose.Schema(
   {
     firstname: {
@@ -41,6 +39,7 @@ var userSchema = new mongoose.Schema(
     },
     address: [{ type: mongoose.Schema.Types.ObjectId, ref: "address" }],
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
+    refreshToken: { type: String },
   },
   {
     timestamps: true,
