@@ -34,10 +34,18 @@ var productSchema = new mongoose.Schema(
       required: true,
     },
     //  enum: ["Apple", "Samsung", "Lenovo"],
-    quantity: { type: Number, required: true },
+    quantity: {
+      type: Number,
+      required: true,
+    },
     sold: {
       type: Number,
       defaul: 0,
+      select: false,
+    },
+    sold: {
+      type: Number,
+      default: 0,
     },
     color: {
       type: String,
