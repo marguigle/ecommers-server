@@ -59,3 +59,18 @@ export const getAllProducts = expressAsyncHandler(async (req, res) => {
     throw new Error("there are not any product");
   }
 });
+// delete one product
+
+export const deleteProduct = expressAsyncHandler(async (req, res) => {
+  const id = req.params._id;
+  try {
+    const productDeleted = await Product.findOneAndDelete(id);
+    res.json({
+      product: productDeleted,
+      success: true,
+      message: "This product was deleted",
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
