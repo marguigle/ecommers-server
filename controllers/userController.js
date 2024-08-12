@@ -190,3 +190,16 @@ export const unblockUser = expressAsyncHandler(async (req, res, next) => {
     throw new Error(error);
   }
 });
+export const updatePassword = expressAsyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  const { password } = req.body;
+  validateMongoDbId(_id);
+  const user = await User.findById(_id);
+  if (password) {
+    user.password = password;
+    const updatedPassword = await user.save();
+    res.json("updated password");
+  } else {
+    res.json(user);
+  }
+});
