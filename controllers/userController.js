@@ -5,6 +5,7 @@ import validateMongoDbId from "../utils/validateMongoDbID.js";
 import { generateRefreshToken } from "../config/refreshToken.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "./emailController.js";
+import crypto from "crypto";
 
 //register
 export const createUser = expressAsyncHandler(async (req, res) => {
@@ -228,4 +229,21 @@ export const forgotPasswordToken = expressAsyncHandler(async (req, res) => {
   } catch (error) {
     throw new Error(error.message);
   }
+});
+export const resetPassword = expressAsyncHandler(async (req, res) => {
+  const { password } = req.body;
+  const { token } = req.params;
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+  if (!user) {
+    throw new Error("Token Expired, Please try again later");
+  }
+  user.password = password;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+  res.json(user);
 });

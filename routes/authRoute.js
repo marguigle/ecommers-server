@@ -12,6 +12,7 @@ import {
   logoutUserController,
   updatePassword,
   forgotPasswordToken,
+  resetPassword,
 } from "../controllers/userController.js";
 import { authMiddlerware, isAdmin } from "../middlewares/authMiddleware.js";
 
@@ -19,6 +20,7 @@ const router = express.Router();
 
 router.post("/register", createUser);
 router.post("/forgot-password-token", forgotPasswordToken);
+router.put("/reset-password/:token", resetPassword);
 router.put("/password", authMiddlerware, updatePassword);
 router.post("/login", loginUserController);
 router.get("/all-users", getAllUsers);
