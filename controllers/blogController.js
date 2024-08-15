@@ -14,6 +14,7 @@ export const createBlog = asyncHandler(async (req, res) => {
 });
 export const updateBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  validateMongoDbId(id);
   try {
     const blogUpdated = await Blog.findByIdAndUpdate(id, req.body, {
       new: true,
@@ -26,6 +27,7 @@ export const updateBlog = asyncHandler(async (req, res) => {
 });
 export const getBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  validateMongoDbId(id);
   try {
     const getBlog = await Blog.findById(id);
     await Blog.findByIdAndUpdate(
@@ -53,6 +55,7 @@ export const getBlogs = asyncHandler(async (req, res) => {
 });
 export const deleteBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  validateMongoDbId(id);
   try {
     const deletedBlog = await Blog.findByIdAndDelete(id);
 
@@ -62,5 +65,66 @@ export const deleteBlog = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     throw new Error(error);
+  }
+});
+
+export const likeBlog = asyncHandler(async (req, res) => {
+  const { blogId } = req.body;
+
+  // Validar el blogId
+  validateMongoDbId(blogId);
+
+  // Buscar el blog en la base de datos
+  const blog = await Blog.findById(blogId);
+  if (!blog) {
+    return res.status(404).json({ message: "Blog not found" });
+  }
+
+  const loginUserId = req?.user?._id;
+
+  // Inicializar disLikes y likes si son undefined
+  const disLikes = blog?.disLikes || [];
+  const likes = blog?.likes || [];
+
+  const isLiked = blog?.isLiked || false;
+  const alreadyDisliked = disLikes.find(
+    (userId) => userId?.toString() === loginUserId?.toString()
+  );
+
+  // Si el usuario ya ha dado "dislike", se remueve el dislike
+  if (alreadyDisliked) {
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      {
+        $pull: { disLikes: loginUserId },
+        isDisLiked: false,
+      },
+      { new: true }
+    );
+    return res.json(updatedBlog);
+  }
+
+  // Si el blog ya está "liked", se remueve el like
+  if (isLiked) {
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      {
+        $pull: { likes: loginUserId },
+        isLiked: false,
+      },
+      { new: true }
+    );
+    return res.json(updatedBlog);
+  } else {
+    // Si no está "liked", se añade el like
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      {
+        $push: { likes: loginUserId },
+        isLiked: true,
+      },
+      { new: true }
+    );
+    return res.json(updatedBlog);
   }
 });
