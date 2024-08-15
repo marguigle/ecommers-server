@@ -128,3 +128,70 @@ export const likeBlog = asyncHandler(async (req, res) => {
     return res.json(updatedBlog);
   }
 });
+//-------------------------------------------------------------------------------------
+
+export const dislikeBlog = asyncHandler(async (req, res) => {
+  const { blogId } = req.body;
+
+  // Validar el blogId
+  validateMongoDbId(blogId);
+
+  // Buscar el blog en la base de datos
+  const blog = await Blog.findById(blogId);
+  if (!blog) {
+    return res.status(404).json({ message: "Blog not found" });
+  }
+
+  const loginUserId = req?.user?._id;
+
+  // Inicializar disLikes y likes si son undefined
+  const disLikes = blog?.disLikes || [];
+  const likes = blog?.likes || [];
+
+  const isLiked = blog?.isLiked || false;
+  const alreadyLiked = likes.find(
+    (userId) => userId?.toString() === loginUserId?.toString()
+  );
+
+  const alreadyDisliked = disLikes.find(
+    (userId) => userId?.toString() === loginUserId?.toString()
+  ); // Agregado: Chequear si ya ha dado dislike
+
+  // Si el usuario ya ha dado "like", se remueve el like
+  if (alreadyLiked) {
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      {
+        $pull: { likes: loginUserId }, // Corrección: Se remueve de `likes`, no `disLikes`
+        isLiked: false,
+      },
+      { new: true }
+    );
+    return res.json(updatedBlog);
+  }
+
+  // Si el blog ya está "disliked", se remueve el dislike
+  if (alreadyDisliked) {
+    // Cambio: Chequear si ya ha dado dislike
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      {
+        $pull: { disLikes: loginUserId }, // Corrección: Se remueve de `disLikes`
+        isDisLiked: false, // Corrección: Cambiar `isDisLiked` a false cuando se remueve el dislike
+      },
+      { new: true }
+    );
+    return res.json(updatedBlog);
+  } else {
+    // Si no está "disliked", se añade el dislike
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      {
+        $push: { disLikes: loginUserId }, // Corrección: Se añade a `disLikes`
+        isDisLiked: true,
+      },
+      { new: true }
+    );
+    return res.json(updatedBlog);
+  }
+});
