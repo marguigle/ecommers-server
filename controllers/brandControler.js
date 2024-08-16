@@ -18,6 +18,9 @@ export const updateBrand = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
+    if (brandUpdated == null) {
+      res.json({ success: false, message: "this Brand was not in database" });
+    }
     const brandUpdated = await Brand.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -53,6 +56,9 @@ export const getOneBrand = asyncHandler(async (req, res) => {
   validateMongoDbId(id);
   try {
     const brandSelected = await Brand.findById(id);
+    if (brandSelected == null) {
+      res.json({ success: false, message: "this Brand was not in database" });
+    }
     res.json({
       success: true,
       brandSelected,

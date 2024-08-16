@@ -1,8 +1,9 @@
 import Product from "../models/productModel.js";
-import expressAsyncHandler from "express-async-handler";
+import User from "../models/userModel.js";
+import asyncHandler from "express-async-handler";
 import slugify from "slugify";
 
-export const createProduct = expressAsyncHandler(async (req, res) => {
+export const createProduct = asyncHandler(async (req, res) => {
   try {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
@@ -17,7 +18,7 @@ export const createProduct = expressAsyncHandler(async (req, res) => {
 
 //update product
 
-export const updateProduct = expressAsyncHandler(async (req, res) => {
+export const updateProduct = asyncHandler(async (req, res) => {
   const id = req.params._id;
   try {
     if (req.body.title) {
@@ -37,7 +38,7 @@ export const updateProduct = expressAsyncHandler(async (req, res) => {
 
 // delete one product
 
-export const deleteProduct = expressAsyncHandler(async (req, res) => {
+export const deleteProduct = asyncHandler(async (req, res) => {
   const id = req.params._id;
   try {
     const productDeleted = await Product.findOneAndDelete(id);
@@ -52,7 +53,7 @@ export const deleteProduct = expressAsyncHandler(async (req, res) => {
 });
 //get one product
 
-export const getOneProduct = expressAsyncHandler(async (req, res) => {
+export const getOneProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
   try {
     if (!id) {
@@ -68,7 +69,7 @@ export const getOneProduct = expressAsyncHandler(async (req, res) => {
 
 //fetch all products
 
-export const getAllProducts = expressAsyncHandler(async (req, res) => {
+export const getAllProducts = asyncHandler(async (req, res) => {
   try {
     const querytObj = { ...req.query };
     const excludeFields = ["page", "sort", "limit", "fields"];
@@ -110,5 +111,34 @@ export const getAllProducts = expressAsyncHandler(async (req, res) => {
     res.json(product);
   } catch (error) {
     throw new Error("there are not any product");
+  }
+});
+export const addToAwhishList = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  const { prodId } = req.body;
+  try {
+    const user = await User.findById(_id);
+    const alreadyAdded = user.wishlist.find((id) => id.toString() == prodId);
+    if (alreadyAdded) {
+      let user = await User.findByIdAndUpdate(
+        _id,
+        {
+          $pull: { wishlist: prodId },
+        },
+        { new: true }
+      );
+      res.json(user);
+    } else {
+      let user = await User.findByIdAndUpdate(
+        _id,
+        {
+          $push: { wishlist: prodId },
+        },
+        { new: true }
+      );
+      res.json(user);
+    }
+  } catch (error) {
+    throw new Error(error);
   }
 });
