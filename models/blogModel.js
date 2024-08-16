@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import mongoose from "mongoose";
 
 var blogSchema = new mongoose.Schema(

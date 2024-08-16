@@ -4,6 +4,7 @@ import connectDB from "./config/DbConnection.js";
 import authRouter from "./routes/authRoute.js";
 import productRouter from "./routes/productRoute.js";
 import blogRouter from "./routes/blogRoute.js";
+import categoryRouter from "./routes/prodCategoryRoute.js";
 import bodyParser from "body-parser";
 import { errorHandler, notFound } from "./middlewares/errorHandler.js";
 import cookieParser from "cookie-parser";
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use("/api/user", authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/blog", blogRouter);
+app.use("/api/prodcategory", categoryRouter);
 app.use(notFound);
 app.use(errorHandler);
 
