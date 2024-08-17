@@ -6,6 +6,7 @@ import {
   updateProduct,
   deleteProduct,
   addToAwhishList,
+  rating,
 } from "../controllers/productController.js";
 import { isAdmin, authMiddleware } from "../middlewares/authMiddleware.js";
 
@@ -15,6 +16,7 @@ router.post("/", authMiddleware, isAdmin, createProduct);
 router.get("/:id", authMiddleware, isAdmin, getOneProduct);
 
 router.put("/wishlist", authMiddleware, addToAwhishList);
+router.put("/rating", authMiddleware, rating);
 router.patch("/:id", authMiddleware, isAdmin, updateProduct);
 router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
 router.get("/", getAllProducts);

@@ -142,3 +142,45 @@ export const addToAwhishList = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+export const rating = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  const { star, prodId } = req.body;
+  try {
+    const product = await Product.findById(prodId);
+    const alreadyRated = product.ratings.find(
+      (userId) => userId.postedBy.toString() === _id.toString()
+    );
+    if (alreadyRated) {
+      const updateRating = await Product.updateOne(
+        {
+          ratings: { $elemMatch: alreadyRated },
+        },
+        {
+          $set: { "ratings.$.star": star },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(updateRating);
+    } else {
+      const rateProduct = await Product.findByIdAndUpdate(
+        prodId,
+        {
+          $push: {
+            ratings: {
+              star: star,
+              postedBy: _id,
+            },
+          },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(rateProduct);
+    }
+  } catch (error) {
+    throw new Error(error);
+  }
+});

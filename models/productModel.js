@@ -58,6 +58,10 @@ var productSchema = new mongoose.Schema(
         postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       },
     ],
+    totaltaings: {
+      type: String,
+      default: 0,
+    },
   },
   {
     timestamps: true,
