@@ -7,6 +7,7 @@ import blogRouter from "./routes/blogRoute.js";
 import brandRouter from "./routes/brandRoute.js";
 import categoryRouter from "./routes/prodCategoryRoute.js";
 import blogCategoryRouter from "./routes/blogCategoryRoute.js";
+import couponRouter from "./routes/couponRoute.js";
 import bodyParser from "body-parser";
 import { errorHandler, notFound } from "./middlewares/errorHandler.js";
 import cookieParser from "cookie-parser";
@@ -31,6 +32,7 @@ app.use("/api/blog", blogRouter);
 app.use("/api/prodcategory", categoryRouter);
 app.use("/api/blogcategory", blogCategoryRouter);
 app.use("/api/brand", brandRouter);
+app.use("/api/coupon", couponRouter);
 app.use(notFound);
 app.use(errorHandler);
 
