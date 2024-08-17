@@ -5,7 +5,7 @@ var productSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      trin: true,
+      trim: true,
     },
     slug: {
       type: String,
@@ -43,10 +43,7 @@ var productSchema = new mongoose.Schema(
       defaul: 0,
       select: false,
     },
-    sold: {
-      type: Number,
-      default: 0,
-    },
+
     color: {
       type: String,
       required: true,
@@ -58,8 +55,8 @@ var productSchema = new mongoose.Schema(
         postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       },
     ],
-    totaltaings: {
-      type: String,
+    totalRatings: {
+      type: Number,
       default: 0,
     },
   },
