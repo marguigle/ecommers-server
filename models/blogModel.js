@@ -39,11 +39,7 @@ var blogSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    image: {
-      type: String,
-      default:
-        "https://plus.unsplash.com/premium_photo-1711051475117-f3a4d3ff6778?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDl8fGJsb2d8ZW58MHx8MHx8fDA%3D",
-    },
+    images: [],
     author: {
       type: String,
       default: "Admin",

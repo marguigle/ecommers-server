@@ -24,7 +24,6 @@ export const authMiddleware = expressAsyncHandler(async (req, res, next) => {
 });
 
 export const isAdmin = expressAsyncHandler(async (req, res, next) => {
-  console.log(req.user);
   const { email } = req.user;
   const adminUser = await User.findOne({ email });
   if (adminUser.role !== "admin") {

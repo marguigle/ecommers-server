@@ -26,9 +26,7 @@ var productSchema = new mongoose.Schema(
       required: true,
     },
     //mongoose.Schema.Types.ObjectId
-    images: {
-      type: Array,
-    },
+    images: [],
     brand: {
       type: String,
       required: true,
