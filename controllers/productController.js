@@ -3,6 +3,7 @@ import Product from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
 import slugify from "slugify";
 import validateMongoDbId from "../utils/validateMongoDbID.js";
+import cloudinaryUploadImg from "../utils/cloudinary.js";
 
 export const createProduct = asyncHandler(async (req, res) => {
   try {
@@ -132,36 +133,6 @@ export const addToWishlist = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
-export const uploadImages = asyncHandler(async (req, res) => {
-  // console.log(req.files);
-  const { id } = req.params;
-  validateMongoDbId(id);
-
-  try {
-    const uploader = (path) => cloudinaryUploadImg(path, "images");
-    const urls = [];
-    const files = req.files;
-    for (let file of files) {
-      const { path } = file;
-      const newpath = await uploader(path);
-      urls.push(newpath);
-      fs.unlinkSync(path);
-    }
-    console.log(newpath);
-    const findProduct = await Blog.findByIdAndUpdate(
-      id,
-      {
-        images: urls.map((file) => {
-          return file;
-        }),
-      },
-      { new: true }
-    );
-    res.json(findProduct);
-  } catch (error) {
-    throw new Error(error);
-  }
-});
 
 export const rating = asyncHandler(async (req, res) => {
   const { _id } = req.user;
@@ -216,5 +187,71 @@ export const rating = asyncHandler(async (req, res) => {
     res.json(finalproduct);
   } catch (error) {
     throw new Error(error);
+  }
+});
+
+// export const uploadImages = asyncHandler(async (req, res) => {
+//   // console.log(req.files);
+//   const { id } = req.params;
+//   validateMongoDbId(id);
+
+//   try {
+//     const uploader = (path) => cloudinaryUploadImg(path, "images");
+//     const urls = [];
+//     const files = req.files;
+//     for (let file of files) {
+//       const { path } = file;
+//       const newpath = await uploader(path);
+//       urls.push(newpath);
+//       fs.unlinkSync(path);
+//       console.log(newpath);
+//     }
+//     const findProduct = await Blog.findByIdAndUpdate(
+//       id,
+//       {
+//         images: urls.map((file) => {
+//           return file;
+//         }),
+//       },
+//       { new: true }
+//     );
+//     res.json(findProduct);
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// });
+export const uploadImages = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+
+  try {
+    const uploader = (path) => cloudinaryUploadImg(path, "images");
+    const urls = [];
+    const files = req.files;
+
+    for (let file of files) {
+      const { path } = file;
+      const newpath = await uploader(path);
+      urls.push(newpath);
+      fs.unlinkSync(path); // Elimina el archivo local después de subirlo a Cloudinary
+      console.log(`Imagen subida: ${newpath}`); // Log por cada imagen subida
+    }
+
+    const findProduct = await Blog.findByIdAndUpdate(
+      id,
+      {
+        images: urls, // Ya tienes las URLs en el array `urls`
+      },
+      { new: true }
+    );
+
+    if (!findProduct) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    res.json(findProduct); // Respuesta JSON con el producto actualizado
+  } catch (error) {
+    console.error("Error durante la subida de imágenes:", error);
+    res.status(500).json({ message: error.message });
   }
 });

@@ -1,8 +1,8 @@
 import cloudinary from "cloudinary";
 
 cloudinary.config({
-  cloud_name: "dujyd1cei",
-  api_key: " 139535829154679",
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
   api_secret: process.env.SECRET_KEY,
 });
 
