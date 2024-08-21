@@ -212,15 +212,13 @@ export const uploadImages = asyncHandler(async (req, res) => {
       const { path } = file;
       const newpath = await uploader(path);
       urls.push(newpath);
-      fs.unlinkSync(path);
+      // fs.unlinkSync(path);
     }
-    console.log(newpath);
+
     const findBlog = await Blog.findByIdAndUpdate(
       id,
       {
-        images: urls.map((file) => {
-          return file;
-        }),
+        images: urls,
       },
       { new: true }
     );
