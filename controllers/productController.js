@@ -4,7 +4,7 @@ import asyncHandler from "express-async-handler";
 import slugify from "slugify";
 import validateMongoDbId from "../utils/validateMongoDbID.js";
 import cloudinaryUploadImg from "../utils/cloudinary.js";
-
+import User from "../models/userModel.js";
 export const createProduct = asyncHandler(async (req, res) => {
   try {
     if (req.body.title) {

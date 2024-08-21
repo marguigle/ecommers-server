@@ -1,5 +1,6 @@
 import { generateToken } from "../config/jwtToken.js";
 import User from "../models/userModel.js";
+import Product from "../models/productModel.js";
 import expressAsyncHandler from "express-async-handler";
 import validateMongoDbId from "../utils/validateMongoDbID.js";
 import { generateRefreshToken } from "../config/refreshToken.js";
@@ -277,4 +278,14 @@ export const resetPassword = expressAsyncHandler(async (req, res) => {
   user.passwordResetExpires = undefined;
   await user.save();
   res.json(user);
+});
+export const getWishLiat = expressAsyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  try {
+    const findUser = await User.findById(_id).populate("wishlist");
+    res.json(findUser);
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
 });

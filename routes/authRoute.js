@@ -14,6 +14,7 @@ import {
   forgotPasswordToken,
   resetPassword,
   loginAdmin,
+  getWishLiat,
 } from "../controllers/userController.js";
 import { authMiddleware, isAdmin } from "../middlewares/authMiddleware.js";
 
@@ -24,11 +25,12 @@ router.post("/forgot-password-token", forgotPasswordToken);
 router.put("/reset-password/:token", resetPassword);
 router.put("/password", authMiddleware, updatePassword);
 router.post("/login", authMiddleware, loginUserController);
-router.post("/admin-login", authMiddleware, loginAdmin);
+router.post("/admin-login", loginAdmin);
 router.get("/all-users", getAllUsers);
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logoutUserController);
 
+router.get("/wishlist", authMiddleware, getWishLiat);
 router.get("/:id", authMiddleware, isAdmin, getOneUser);
 router.delete("/:id", deleteOneUser);
 router.put("/edit-user", authMiddleware, isAdmin, updateOneUser);
