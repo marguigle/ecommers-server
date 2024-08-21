@@ -15,6 +15,7 @@ import {
   resetPassword,
   loginAdmin,
   getWishLiat,
+  saveAddress,
 } from "../controllers/userController.js";
 import { authMiddleware, isAdmin } from "../middlewares/authMiddleware.js";
 
@@ -33,7 +34,8 @@ router.get("/logout", logoutUserController);
 router.get("/wishlist", authMiddleware, getWishLiat);
 router.get("/:id", authMiddleware, isAdmin, getOneUser);
 router.delete("/:id", deleteOneUser);
-router.put("/edit-user", authMiddleware, isAdmin, updateOneUser);
+router.put("/edit-user", authMiddleware, updateOneUser);
+router.put("/save-address", authMiddleware, saveAddress);
 router.put("/block-user/:id", authMiddleware, isAdmin, blockUser);
 router.put("/unblock-user/:id", authMiddleware, isAdmin, unblockUser);
 

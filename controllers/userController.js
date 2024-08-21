@@ -152,6 +152,28 @@ export const updateOneUser = expressAsyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+//save user address
+export const saveAddress = expressAsyncHandler(async (req, res, next) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const userUpdated = await User.findByIdAndUpdate(
+      _id,
+      { address: req?.body?.address },
+      {
+        new: true,
+      }
+    );
+
+    res.json({
+      user: userUpdated,
+      message: "The user was udated successfully",
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 //all users
 export const getAllUsers = expressAsyncHandler(async (req, res) => {
   try {
