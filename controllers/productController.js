@@ -270,14 +270,16 @@ export const uploadImages = asyncHandler(async (req, res) => {
       const newpath = await uploader(path);
       urls.push(newpath);
 
-      fs.unlinkSync(path); // Elimina el archivo local después de subirlo a Cloudinary
+      // fs.unlinkSync(path); // Elimina el archivo local después de subirlo a Cloudinary
       console.log(`Imagen subida: ${newpath}`);
     }
 
     const findProduct = await Product.findByIdAndUpdate(
       id,
       {
-        images: urls, // URLs de Cloudinary
+        images: urls.map((file) => {
+          return file;
+        }), // URLs de Cloudinary
       },
       { new: true }
     );

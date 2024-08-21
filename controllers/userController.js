@@ -25,7 +25,7 @@ export const loginUserController = expressAsyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const findUser = await User.findOne({ email });
   if (findUser && (await findUser.isPasswordMatched(password))) {
-    const refreshToken = await generateRefreshToken(findUser?._id);
+    const refreshToken = await generateRefreshToken(findUser?.id);
     const updateuser = await User.findByIdAndUpdate(
       findUser.id,
       { refreshToken: refreshToken },
@@ -42,6 +42,37 @@ export const loginUserController = expressAsyncHandler(async (req, res) => {
       email: findUser?.email,
       mobile: findUser?.mobile,
       token: generateToken(findUser?._id),
+    });
+  } else {
+    throw new Error("Invalid credentials");
+  }
+});
+
+//admin login
+
+export const loginAdmin = expressAsyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const findAdmin = await User.findOne({ email });
+  if (findAdmin.role !== "admin") throw new Error("Not Authorised");
+  if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
+    const refreshToken = await generateRefreshToken(findAdmin?._id);
+    const updateuser = await User.findByIdAndUpdate(
+      findAdmin.id,
+      { refreshToken: refreshToken },
+      { new: true }
+    );
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 72 * 60 * 60 * 1000,
+    });
+    res.json({
+      _id: findAdmin?._id,
+      firstname: findAdmin?.firstname,
+      lastname: findAdmin?.lastname,
+      email: findAdmin?.email,
+      mobile: findAdmin?.mobile,
+      role: findAdmin?.role,
+      token: generateToken(findAdmin?._id),
     });
   } else {
     throw new Error("Invalid credentials");
@@ -194,10 +225,10 @@ export const unblockUser = expressAsyncHandler(async (req, res, next) => {
   }
 });
 export const updatePassword = expressAsyncHandler(async (req, res) => {
-  const { _id } = req.user;
+  const { id } = req.user;
   const { password } = req.body;
-  validateMongoDbId(_id);
-  const user = await User.findById(_id);
+  validateMongoDbId(id);
+  const user = await User.findById(id);
   if (password) {
     user.password = password;
     const updatedPassword = await user.save();

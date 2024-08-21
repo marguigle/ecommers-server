@@ -13,6 +13,7 @@ import {
   updatePassword,
   forgotPasswordToken,
   resetPassword,
+  loginAdmin,
 } from "../controllers/userController.js";
 import { authMiddleware, isAdmin } from "../middlewares/authMiddleware.js";
 
@@ -22,7 +23,8 @@ router.post("/register", createUser);
 router.post("/forgot-password-token", forgotPasswordToken);
 router.put("/reset-password/:token", resetPassword);
 router.put("/password", authMiddleware, updatePassword);
-router.post("/login", loginUserController);
+router.post("/login", authMiddleware, loginUserController);
+router.post("/admin-login", authMiddleware, loginAdmin);
 router.get("/all-users", getAllUsers);
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logoutUserController);

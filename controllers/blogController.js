@@ -218,10 +218,13 @@ export const uploadImages = asyncHandler(async (req, res) => {
     const findBlog = await Blog.findByIdAndUpdate(
       id,
       {
-        images: urls,
+        images: urls.map((file) => {
+          return file;
+        }),
       },
       { new: true }
     );
+
     res.json(findBlog);
   } catch (error) {
     throw new Error(error);
