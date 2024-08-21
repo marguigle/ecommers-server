@@ -1,4 +1,5 @@
 import Product from "../models/productModel.js";
+import fs from "fs";
 
 import asyncHandler from "express-async-handler";
 import slugify from "slugify";
@@ -233,11 +234,11 @@ export const uploadImages = asyncHandler(async (req, res) => {
       const { path } = file;
       const newpath = await uploader(path);
       urls.push(newpath);
-      fs.unlinkSync(path); // Elimina el archivo local después de subirlo a Cloudinary
+      //fs.unlinkSync(path); // Elimina el archivo local después de subirlo a Cloudinary
       console.log(`Imagen subida: ${newpath}`); // Log por cada imagen subida
     }
 
-    const findProduct = await Blog.findByIdAndUpdate(
+    const findProduct = await Product.findByIdAndUpdate(
       id,
       {
         images: urls, // Ya tienes las URLs en el array `urls`
