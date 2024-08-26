@@ -16,6 +16,10 @@ import {
   loginAdmin,
   getWishLiat,
   saveAddress,
+  userCart,
+  getUserCart,
+  emptyCart,
+  applyCoupon,
 } from "../controllers/userController.js";
 import { authMiddleware, isAdmin } from "../middlewares/authMiddleware.js";
 
@@ -24,16 +28,23 @@ const router = express.Router();
 router.post("/register", createUser);
 router.post("/forgot-password-token", forgotPasswordToken);
 router.put("/reset-password/:token", resetPassword);
+
 router.put("/password", authMiddleware, updatePassword);
 router.post("/login", authMiddleware, loginUserController);
 router.post("/admin-login", loginAdmin);
+router.post("/cart", authMiddleware, userCart);
+router.post("/cart/apply-coupon", authMiddleware, applyCoupon);
+
 router.get("/all-users", getAllUsers);
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logoutUserController);
-
 router.get("/wishlist", authMiddleware, getWishLiat);
+router.get("/cart", authMiddleware, getUserCart);
+
 router.get("/:id", authMiddleware, isAdmin, getOneUser);
+router.delete("/emty-cart", authMiddleware, emptyCart);
 router.delete("/:id", deleteOneUser);
+
 router.put("/edit-user", authMiddleware, updateOneUser);
 router.put("/save-address", authMiddleware, saveAddress);
 router.put("/block-user/:id", authMiddleware, isAdmin, blockUser);
