@@ -5,7 +5,10 @@ var cartSchema = new mongoose.Schema(
   {
     products: [
       {
-        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
         count: Number,
         color: String,
         price: Number,
@@ -13,13 +16,14 @@ var cartSchema = new mongoose.Schema(
     ],
     cartTotal: Number,
     totalAfterDiscount: Number,
-
     orderby: {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
-  { timestaps: true }
+  {
+    timestamps: true,
+  }
 );
-
 //Export the model
 export default mongoose.model("Cart", cartSchema);

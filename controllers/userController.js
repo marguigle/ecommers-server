@@ -318,77 +318,102 @@ export const getWishLiat = expressAsyncHandler(async (req, res) => {
 export const userCart = expressAsyncHandler(async (req, res) => {
   const { cart } = req.body;
   const { _id } = req.user;
-
   validateMongoDbId(_id);
-
-  let products = [];
-  const user = await User.findById(_id);
-  const alreadyExistCart = await Cart.findOne({ orderby: user._id });
   try {
+    let products = [];
+    const user = await User.findById(_id);
+    // check if user already have product in cart
+    const alreadyExistCart = await Cart.findOne({ orderby: user._id });
     if (alreadyExistCart) {
-      await alreadyExistCart.remove();
+      alreadyExistCart.remove();
     }
-
     for (let i = 0; i < cart.length; i++) {
-      if (!cart[i]._id) {
-        throw new Error(`Product ID is missing in cart item at index ${i}`);
-      }
-
       let object = {};
       object.product = cart[i]._id;
       object.count = cart[i].count;
       object.color = cart[i].color;
-
       let getPrice = await Product.findById(cart[i]._id).select("price").exec();
       object.price = getPrice.price;
       products.push(object);
     }
-
     let cartTotal = 0;
     for (let i = 0; i < products.length; i++) {
       cartTotal = cartTotal + products[i].price * products[i].count;
     }
-
     let newCart = await new Cart({
       products,
       cartTotal,
       orderby: user?._id,
     }).save();
-    const savedCart = await Cart.findById(newCart._id);
-    console.log("Carrito guardado:", savedCart);
-
-    res.json({ newCart, orderby: user?._id });
+    res.json(newCart);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    throw new Error(error);
   }
 });
 
 export const getUserCart = expressAsyncHandler(async (req, res) => {
   const { _id } = req.user;
-
   validateMongoDbId(_id);
   try {
     const cart = await Cart.findOne({ orderby: _id }).populate(
-      "Products.product"
+      "products.product"
     );
-    console.log(cart);
     res.json(cart);
   } catch (error) {
     throw new Error(error);
   }
 });
+
+// export const emptyCart = expressAsyncHandler(async (req, res) => {
+//   const { _id } = req.user;
+//   validateMongoDbId(_id);
+//   try {
+//     const user = await User.findOne({ _id });
+//     const cart = await Cart.findOneAndDelete({ orderby: user._id });
+//     console.log(cart);
+//     res.json(cart);
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// });
+
+//--------------------------------------------------------------------------------
 export const emptyCart = expressAsyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
     const user = await User.findOne({ _id });
-    const card = await Cart.findOneAndDelete({ orderby: user._id });
-    console.log(cart);
+    const cart = await Cart.findOneAndRemove({ orderby: user._id });
     res.json(cart);
   } catch (error) {
     throw new Error(error);
   }
 });
+//-------------------------------------------------------------------------------
+
+// export const applyCoupon = expressAsyncHandler(async (req, res) => {
+//   const { coupon } = req.body;
+//   const { _id } = req.user;
+//   validateMongoDbId(_id);
+//   const validCoupon = await Coupon.findOne({ name: coupon });
+//   if (validCoupon === null) {
+//     throw new Error("Invalid Coupon");
+//   }
+//   const user = await User.findOne({ _id });
+//   let { cartTotal } = await Cart.findOne({
+//     orderby: user._id,
+//   }).populate("products.product");
+//   let totalAfterDiscount = (
+//     cartTotal -
+//     (cartTotal * validCoupon.discount) / 100
+//   ).toFixed(2);
+//   await Cart.findByIdAndUpdate(
+//     { orderby: user._id },
+//     { totalAfterDiscount },
+//     { new: true }
+//   );
+//   res.json(totalAfterDiscount);
+// });
 export const applyCoupon = expressAsyncHandler(async (req, res) => {
   const { coupon } = req.body;
   const { _id } = req.user;
@@ -405,7 +430,7 @@ export const applyCoupon = expressAsyncHandler(async (req, res) => {
     cartTotal -
     (cartTotal * validCoupon.discount) / 100
   ).toFixed(2);
-  await Cart.findByIdAndUpdate(
+  await Cart.findOneAndUpdate(
     { orderby: user._id },
     { totalAfterDiscount },
     { new: true }
