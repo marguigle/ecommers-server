@@ -4,7 +4,10 @@ var orderSchema = new mongoose.Schema(
   {
     products: [
       {
-        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
         count: Number,
         color: String,
       },
@@ -12,7 +15,7 @@ var orderSchema = new mongoose.Schema(
     paymentIntent: {},
     orderStatus: {
       type: String,
-      default: "Not processed",
+      default: "Not Processed",
       enum: [
         "Not Processed",
         "Cash on Delivery",
@@ -23,10 +26,13 @@ var orderSchema = new mongoose.Schema(
       ],
     },
     orderby: {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
-  { timestaps: true }
+  {
+    timestamps: true,
+  }
 );
 
 //Export the model
