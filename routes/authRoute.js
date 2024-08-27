@@ -24,6 +24,7 @@ import {
   getOrders,
   updateOrderStatus,
   getOrderByUserId,
+  getAllOrders,
 } from "../controllers/userController.js";
 import { authMiddleware, isAdmin } from "../middlewares/authMiddleware.js";
 
@@ -48,6 +49,9 @@ router.post("/cart/cash-order", authMiddleware, createOrder);
 
 router.get("/all-users", getAllUsers);
 router.get("/get-orders", authMiddleware, getOrders);
+
+router.get("/getallorders", authMiddleware, isAdmin, getAllOrders);
+router.post("/getorderbyuser/:id", authMiddleware, isAdmin, getOrderByUserId);
 
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logoutUserController);
