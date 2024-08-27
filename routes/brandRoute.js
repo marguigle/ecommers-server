@@ -5,7 +5,7 @@ import {
   deleteBrand,
   getBrands,
   getOneBrand,
-} from "../controllers/brandControler.js";
+} from "../controllers/brandController.js";
 import { authMiddleware, isAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
