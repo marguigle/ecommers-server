@@ -1,5 +1,5 @@
 import Blog from "../models/blogModel.js";
-import cloudinaryUploadImg from "../utils/cloudinary.js";
+import { cloudinaryUploadImg } from "../utils/cloudinary.js";
 import asyncHandler from "express-async-handler";
 import validateMongoDbId from "../utils/validateMongoDbID.js";
 import fs from "fs";

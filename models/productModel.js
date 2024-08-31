@@ -26,7 +26,7 @@ var productSchema = new mongoose.Schema(
       required: true,
     },
     //mongoose.Schema.Types.ObjectId
-    images: [],
+
     brand: {
       type: String,
       required: true,
@@ -41,11 +41,9 @@ var productSchema = new mongoose.Schema(
       defaul: 0,
       select: false,
     },
-
-    color: {
-      type: String,
-      required: true,
-    },
+    images: [],
+    color: [],
+    tags: [],
     // enum: ["Black", "Brown", "Red"],
     ratings: [
       {
