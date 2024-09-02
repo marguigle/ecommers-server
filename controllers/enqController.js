@@ -1,4 +1,4 @@
-import Enquiry from "../models/enqModel";
+import Enquiry from "../models/enqModel.js";
 import asyncHandler from "express-async-handler";
 import validateMongoDbId from "../utils/validateMongoDbID.js";
 

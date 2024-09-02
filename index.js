@@ -5,6 +5,7 @@ import authRouter from "./routes/authRoute.js";
 import productRouter from "./routes/productRoute.js";
 import blogRouter from "./routes/blogRoute.js";
 import colorRouter from "./routes/colorRoute.js";
+import enqRouter from "./routes/enqRoute.js";
 import categoryRouter from "./routes/prodCategoryRoute.js";
 import blogCategoryRouter from "./routes/blogCategoryRoute.js";
 import couponRouter from "./routes/couponRoute.js";
@@ -34,6 +35,7 @@ app.use("/api/blogcategory", blogCategoryRouter);
 app.use("/api/Color", colorRouter);
 app.use("/api/coupon", couponRouter);
 app.use("/api/color", colorRouter);
+app.use("/api/enquiry", enqRouter);
 app.use(notFound);
 app.use(errorHandler);
 
