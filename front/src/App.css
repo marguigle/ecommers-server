@@ -1,0 +1,114 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Rubik", sans-serif;
+}
+:root {
+  --color: #2e2d2d;
+  --color-2: #656565;
+  --color-3: #dc1d1d;
+}
+a {
+  text-decoration: none;
+  display: inline-block;
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: inherit;
+}
+.header-top-strip {
+  background-color: var(--color);
+  border: 1px solid var(--color-2);
+}
+.header-upper {
+  background-color: var(--color);
+}
+.header-upper .input-group-text {
+  background-color: var(--color-3);
+}
+.link-img {
+  width: 35px;
+  height: 35px;
+  color: white;
+  background-color: rgb(224, 235, 126);
+  border-radius: 40%;
+  margin-right: 5px;
+}
+.Link {
+  text-decoration: none;
+}
+.gap-2 {
+  gap: 2px;
+}
+.gap-3 {
+  gap: 3px;
+}
+.gap-5 {
+  gap: 5px;
+}
+.gap-10 {
+  gap: 10px;
+}
+.gap-15 {
+  gap: 15px;
+}
+.gap-30 {
+  gap: 30px;
+}
+
+.Link-bottom {
+  text-decoration: none;
+  color: rgb(255, 221, 0);
+}
+.header-bottom {
+  background-color: #656565;
+}
+.header-bottom .menu-links,
+.dropdown button {
+  text-transform: uppercase;
+  line-height: 18px;
+  letter-spacing: 0.3;
+  font-size: 14px;
+  text-decoration: none;
+  color: rgb(255, 221, 0);
+  border: 0;
+}
+.menu-img {
+  max-width: 4.8%;
+}
+
+.header-bottom .dropdown-menu {
+  width: 70%;
+  background-color: #656565;
+  transform: translate3d(0px, 61.5px, 0px) !important;
+}
+/* .header-bottom .dropdown-item {
+  /* padding: 10px; */
+/* margin-bottom: 3px; */
+/* border-bottom: 1px solid rgb(147, 147, 147); 
+} */
+.header-bottom .dropdown-item:hover {
+  background-color: rgb(110, 108, 108);
+}
+/* footer part */
+footer {
+  background-color: var(--color);
+}
+footer:not(:first-child) {
+  border-top: 1px solid var(--color-2);
+}
+.footer-top-data > img {
+  max-width: 50px;
+  background-color: rgba(218, 221, 221, 0.089);
+  border-radius: 50%;
+}
+.footer-top-data > img:hover {
+  background-color: rgba(4, 97, 97, 0.986);
+}
+footer .input-group-text {
+  background-color: #2e2d2d;
+  color: white;
+}

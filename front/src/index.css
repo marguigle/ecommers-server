@@ -1,0 +1,189 @@
+:root {
+  --color1: #0f5019;
+  --color2: #166a1e;
+  --color3: #3c9227;
+  --color4: #75d030;
+  --color5: #c4ff46;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.header-top-strip {
+  background-color: var(--color3);
+}
+
+.header-upper {
+  background-color: var(--color3);
+}
+
+.header-bottom {
+  background-color: var(--color4);
+}
+
+.Link-bottom {
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.Link-bottom:hover,
+.Link-bottom.active {
+  color: var(--color2);
+}
+
+.Link-bottom:focus-visible {
+  outline: 2px solid var(--color2);
+  outline-offset: 2px;
+}
+
+.Link {
+  color: white;
+  text-decoration: none;
+}
+
+.Link:hover {
+  color: var(--color2);
+}
+
+.card {
+  transition: transform 0.2s ease;
+  border-color: var(--color1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(107, 34, 53, 0.2);
+  border-color: var(--color5);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color3);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background-color: var(--color3);
+  border-color: var(--color3);
+  color: white;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color4);
+  border-color: var(--color4);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color3);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  background-color: var(--color4);
+  border-color: var(--color4);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color5);
+  border-color: var(--color5);
+}
+
+.home-wrapper-1 {
+  background-color: var(--color1);
+  padding: 40px 0;
+}
+
+.container-xxl {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.dropdown-menu {
+  background-color: var(--color4);
+  border-color: var(--color4);
+}
+
+.dropdown-item {
+  color: white;
+}
+
+.dropdown-item:hover {
+  background-color: var(--color5);
+  color: white;
+}
+
+.badge {
+  font-size: 0.75em;
+  font-variant-numeric: tabular-nums;
+  background-color: var(--color2) !important;
+  color: #000 !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.table {
+  --bs-table-bg: transparent;
+}
+
+.table th {
+  background-color: var(--color3);
+  color: white;
+  border-color: var(--color4);
+}
+
+.table td {
+  border-color: var(--color1);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color3);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color3);
+}
+
+.text-primary {
+  color: var(--color3) !important;
+}
+
+.text-secondary {
+  color: var(--color4) !important;
+}
+
+.bg-primary {
+  background-color: var(--color3) !important;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-warning {
+  background-color: var(--color2) !important;
+}
+
+.bg-info {
+  background-color: var(--color5) !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
